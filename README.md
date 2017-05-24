@@ -1,2 +1,3 @@
 # wiiu-screenshot
-A web server to save wiiu screenshot based on openresty
+
+A web server based on openresty to save a screenshot of wiiu.
