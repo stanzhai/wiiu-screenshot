@@ -8,7 +8,13 @@
 </head>
 <body>
     <form id="form" method="post" action="/" enctype="multipart/form-data">
-        <input type="file" name="screenshot" />
+        <input type="file" name="screenshot" id="file"/>
     </form>
+
+    <script type="text/javascript">
+        document.getElementById('file').onchange = function() {
+            document.getElementById('form').submit();
+        }
+    </script>
 </body>
 </html>
