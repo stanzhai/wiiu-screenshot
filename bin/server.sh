@@ -1,6 +1,11 @@
 #!/bin/bash
 HOME="$(cd `dirname "${BASH_SOURCE-$0}"`/..; pwd)"
 PID_FILE=pid.log
+LOG_DIR=$HOME/logs
+
+if [ ! -d $LOG_DIR ]; then
+    mkdir $LOG_DIR
+fi
 
 start() {
     nginx -p $HOME/ -c conf/nginx.conf
