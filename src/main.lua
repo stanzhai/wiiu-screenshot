@@ -23,6 +23,7 @@ local handle_post = function ()
     --     ngx.say("Only Nintendo WiiU Browser is supported!")
     --     return
     -- end
+
     local upload = require("resty.upload")
     local chunk_size = 4096
     local form, err = upload:new(chunk_size)
@@ -50,12 +51,10 @@ local handle_post = function ()
                     return
                 end
             end
-
          elseif typ == "body" then
             if file then
                 file:write(res)
             end
-
         elseif typ == "part_end" then
             file:close()
             file = nil
@@ -75,6 +74,3 @@ if method == "GET" then
 else
     handle_post()
 end
-
-
-
