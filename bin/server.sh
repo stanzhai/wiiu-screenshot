@@ -2,9 +2,13 @@
 HOME="$(cd `dirname "${BASH_SOURCE-$0}"`/..; pwd)"
 PID_FILE=pid.log
 LOG_DIR=$HOME/logs
+UPLOAD_DIR=$HOME/upload
 
 if [ ! -d $LOG_DIR ]; then
     mkdir $LOG_DIR
+fi
+if [ ! -d $UPLOAD_DIR ]; then
+    mkdir $UPLOAD_DIR
 fi
 
 start() {
