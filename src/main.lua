@@ -1,19 +1,26 @@
 local ua = ngx.var.http_user_agent
 
-function get_filename(res)  
-    local filename = ngx.re.match(res[2], '(.+)filename="(.+)"(.*)')  
-    if filename then   
-        return filename[2]  
-    end  
-end  
+function make_filename(res)  
+    local match = ngx.re.match(res[2], '(.+)filename="(.+)"(.*)')
+    if match then
+        local filename = match[2]
+        ngx.log(ngx.ERR, filename)
+        local split = require("./utils").split
+        -- WiiU_screenshot_TV_01C93.jpg
+        local data = split(filename, '_')
+        data = split(data[#data], '.')
+        local id = data[1]
+        return id .. "_" .. os.date("%Y%m%d_%H%M%S") .. ".jpg"
+    end
+end
 
 -- index page handler
 local handle_get = function ()
     local res = nil
     if string.find(ua, "(Nintendo WiiU)") then
-        res = ngx.location.capture('/upload')
+        res = ngx.location.capture('/wiiu')
     else
-        res = ngx.location.capture('/upload')
+        res = ngx.location.capture('/home')
     end
     ngx.say(res.body)
 end
@@ -41,7 +48,7 @@ local handle_post = function ()
         end
 
         if typ == "header" then
-            local file_name = get_filename(res)
+            local file_name = make_filename(res)
             ngx.log(ngx.ERR, file_name)
             if file_name then
                 file_name = "./upload/" .. file_name
@@ -65,7 +72,6 @@ local handle_post = function ()
 
     ngx.redirect("/")
 end
-
 
 ngx.header['Server'] = 'wiiu-screenshot-server code by stan'
 local method = ngx.req.get_method()

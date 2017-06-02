@@ -1,0 +1,5 @@
+local cjson = require('cjson')
+local utils = require('utils')
+local files = utils.get_files('upload')
+local json = cjson.encode(files)
+ngx.say(json)

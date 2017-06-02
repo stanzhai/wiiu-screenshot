@@ -5,8 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WiiU Screenshot Server</title>
+    <link rel="stylesheet" href="/static/jquery.fancybox.min.css" />
 </head>
 <body>
     <h1>WiiU Screenshot Server</h1>
+    <div id="images">
+    </div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/static/jquery.fancybox.min.js"></script>
+
+    <script type="text/javascript">
+        $.get('/api/images', function (data) {
+            data.forEach(function(image) {
+                $('#images').append('<a data-fancybox="gallery" href="/upload/' + image + '"><img src="small_"' + image + '></a>')
+            }, this);
+            $("[data-fancybox]").fancybox();
+        });
+    </script>
 </body>
 </html>
