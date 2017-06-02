@@ -3,10 +3,9 @@ local ua = ngx.var.http_user_agent
 function make_filename(res)  
     local match = ngx.re.match(res[2], '(.+)filename="(.+)"(.*)')
     if match then
-        local filename = match[2]
-        ngx.log(ngx.ERR, filename)
-        local split = require("./utils").split
         -- WiiU_screenshot_TV_01C93.jpg
+        local filename = match[2]
+        local split = require("./utils").split
         local data = split(filename, '_')
         data = split(data[#data], '.')
         local id = data[1]
@@ -26,10 +25,10 @@ local handle_get = function ()
 end
 
 local handle_post = function ()
-    -- if string.find(ua, "(Nintendo WiiU)") == nil then
-    --     ngx.say("Only Nintendo WiiU Browser is supported!")
-    --     return
-    -- end
+    if string.find(ua, "(Nintendo WiiU)") == nil then
+        ngx.say("Only Nintendo WiiU Browser is supported!")
+        return
+    end
 
     local upload = require("resty.upload")
     local chunk_size = 4096
@@ -72,9 +71,7 @@ local handle_post = function ()
     end
 
     if upload_file then
-        -- local magick = require("magick")
-        -- magick.thumb("./upload/" .. upload_file, "256x256", "./upload/small_" .. upload_file)
-        local cmd = 'convert -resize 128x128 "./upload/' .. upload_file .. '" "./upload/small_' .. upload_file .. '"'
+        local cmd = 'convert -resize 128x128 "./upload/' .. upload_file .. '" "./thumbnail/' .. upload_file .. '"'
         os.execute(cmd)
     end
 

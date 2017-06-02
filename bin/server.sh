@@ -1,15 +1,14 @@
 #!/bin/bash
 HOME="$(cd `dirname "${BASH_SOURCE-$0}"`/..; pwd)"
 PID_FILE=pid.log
-LOG_DIR=$HOME/logs
-UPLOAD_DIR=$HOME/upload
 
-if [ ! -d $LOG_DIR ]; then
-    mkdir $LOG_DIR
-fi
-if [ ! -d $UPLOAD_DIR ]; then
-    mkdir $UPLOAD_DIR
-fi
+for d in logs upload thumbnail
+do
+    DIR=$HOME/$d
+    if [ ! -d $DIR ]; then
+        mkdir $DIR
+    fi
+done
 
 start() {
     nginx -p $HOME/ -c conf/nginx.conf

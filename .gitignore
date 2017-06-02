@@ -1,5 +1,6 @@
 logs/
 upload/
+thumbnail/
 *temp/
 
 pid.log

@@ -18,10 +18,7 @@
     <script type="text/javascript">
         $.get('/api/images', function (data) {
             data.forEach(function(image) {
-                if (image.indexOf("small_") == 0) {
-                    return;
-                }
-                $('#images').append('<a data-fancybox="gallery" href="/upload/' + image + '"><img src="/upload/small_' + image + '"></a>')
+                $('#images').append('<a data-fancybox="gallery" href="/upload/' + image + '"><img src="/thumbnail/' + image + '"></a>')
             }, this);
             $("[data-fancybox]").fancybox();
         });
