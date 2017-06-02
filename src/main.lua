@@ -39,6 +39,7 @@ local handle_post = function ()
         ngx.exit(500)
     end
 
+    local upload_file = nil
     while true do
         local typ, res, err = form:read()
 
@@ -49,12 +50,12 @@ local handle_post = function ()
 
         if typ == "header" then
             local file_name = make_filename(res)
-            ngx.log(ngx.ERR, file_name)
             if file_name then
-                file_name = "./upload/" .. file_name
-                file = io.open(file_name, "w+")
+                upload_file = file_name
+                local full_file = "./upload/" .. file_name
+                file = io.open(full_file, "w+")
                 if not file then
-                    ngx.say("failed to open file ", file_name)
+                    ngx.say("failed to open file ", full_file)
                     return
                 end
             end
@@ -68,6 +69,13 @@ local handle_post = function ()
         elseif typ == "eof" then
             break
         end
+    end
+
+    if upload_file then
+        -- local magick = require("magick")
+        -- magick.thumb("./upload/" .. upload_file, "256x256", "./upload/small_" .. upload_file)
+        local cmd = 'convert -resize 128x128 "./upload/' .. upload_file .. '" "./upload/small_' .. upload_file .. '"'
+        os.execute(cmd)
     end
 
     ngx.redirect("/")
