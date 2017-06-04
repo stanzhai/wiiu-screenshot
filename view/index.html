@@ -84,7 +84,9 @@
                 $('#container').append('<h2>' + g + '</h2>');
                 var group = $('<div class="images"/>');
                 groupData[g].forEach(function (image) {
-                    group.append('<a data-fancybox="gallery" href="/upload/' + image + '"><img src="/thumbnail/' + image + '"></a>');
+                    var fileName = image.split('.')[0];
+                    var html = '<a data-fancybox="gallery" data-caption="' + fileName + '" href="/upload/' + image + '"><img src="/thumbnail/' + image + '"></a>';
+                    group.append(html);
                 });
                 group.appendTo('#container');
             }
