@@ -6,10 +6,49 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WiiU Screenshot Server</title>
     <link rel="stylesheet" href="/static/jquery.fancybox.min.css" />
+    <style type="text/css">
+        .images a {
+            display: inline-block;
+            padding: 2px;
+            margin: 0 0.5rem 1rem 0.5rem;
+            background-color: #fff;
+            line-height: 0;
+            border-radius: 4px;
+            transition: background-color 0.5s ease-out;
+        }
+        .images a:hover {
+            background-color: #4ae;
+            transition: none;
+        }
+        #footer {
+            margin: 10px;
+            font-size: 14px;
+        }
+        body {
+            color: #FF5722;
+        }
+        img {
+            border-radius: 4px;
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 2rem;
+            font-size: 34px;
+        }
+        a {
+            color: #4ae;
+            text-decoration: none;
+            outline: 0;
+        }
+    </style>
 </head>
 <body>
     <h1>WiiU Screenshot Server</h1>
     <div id="container">
+    </div>
+    <div id="footer">
+        <div>© 2017 &lt;/&gt; ❤️ <a href="https://github.com/stanzhai" target="_blank">StanZhai</a></div>
+        <div><a href="https://github.com/stanzhai/wiiu-screenshot" target="_blank">Fork on GitHub</a></div>
     </div>
 
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
