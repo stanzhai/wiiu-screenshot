@@ -1,4 +1,4 @@
--- you should `mv config.lua.template config.lua`
+-- `mv config.lua.template config.lua`
 return {
     password = "your upload password"
 }

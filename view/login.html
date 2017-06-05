@@ -7,19 +7,26 @@
     <title>WiiU Screenshot</title>
 </head>
 <body>
-    <h1>Upload password</h1>
+    <h1>Admin password</h1>
     <div>
         Password: <input id="pwd" type="password" />
+        <input id="submit" type="button" value="Verify"/>
     </div>
+    <p id="msg" style="color: red"/>
+
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-        $.post('/api/login')
-    </script>
-
-    <script type="text/javascript">
-        document.getElementById('file').onchange = function() {
-            document.getElementById('form').submit();
-        }
+        $('#submit').click(function () {
+            var pwd = $("#pwd").val();
+            $.post('/api/login', {password: pwd}, function (data) {
+                data = data.trim();
+                if (data == "ok") {
+                    window.location.href = "/";
+                } else {
+                    $("#msg").text(data);
+                }
+            }, 'text');
+        });
     </script>
 </body>
 </html>
