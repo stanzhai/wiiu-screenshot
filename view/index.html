@@ -56,14 +56,17 @@
     <script src="/static/jquery.fancybox.min.js"></script>
 
     <script type="text/javascript">
+        var logged = false;
+
         $.get('/api/images', function (data) {
+            logged = data.logged;
             var groupData = makeGroup(data);
             initFancybox(groupData);
         });
 
         function makeGroup(data) {
             var result = {};
-            data.forEach(function (image) {
+            data.images.forEach(function (image) {
                 var g = image.split('_')[0];
                 if (!(g in result)) {
                     result[g] = [];

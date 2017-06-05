@@ -3,4 +3,6 @@ upload/
 thumbnail/
 *temp/
 
+src/config.lua
+
 pid.log

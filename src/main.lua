@@ -17,7 +17,12 @@ end
 local handle_get = function ()
     local res = nil
     if string.find(ua, "(Nintendo WiiU)") then
-        res = ngx.location.capture('/wiiu')
+        local session = require "resty.session".open()
+        if session.data.logged then
+            res = ngx.location.capture('/wiiu')
+        else
+            res = ngx.location.capture('/login')
+        end
     else
         res = ngx.location.capture('/home')
     end
@@ -27,6 +32,12 @@ end
 local handle_post = function ()
     if string.find(ua, "(Nintendo WiiU)") == nil then
         ngx.say("Only Nintendo WiiU Browser is supported!")
+        return
+    end
+
+    local session = require "resty.session".open()
+    if not session.data.logged then
+        ngx.say("Permission deny!")
         return
     end
 
