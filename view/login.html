@@ -8,25 +8,9 @@
 </head>
 <body>
     <h1>Admin password</h1>
-    <div>
-        Password: <input id="pwd" type="password" />
-        <input id="submit" type="button" value="Verify"/>
-    </div>
-    <p id="msg" style="color: red"/>
-
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $('#submit').click(function () {
-            var pwd = $("#pwd").val();
-            $.post('/api/login', {password: pwd}, function (data) {
-                data = data.trim();
-                if (data == "ok") {
-                    window.location.href = "/";
-                } else {
-                    $("#msg").text(data);
-                }
-            }, 'text');
-        });
-    </script>
+    <form action="/api/login" method="POST">
+        Password: <input id="pwd" type="password" name="password"/>
+        <input id="submit" type="submit" value="Verify"/>
+    </form>
 </body>
 </html>
