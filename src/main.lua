@@ -50,6 +50,7 @@ local handle_post = function ()
     end
 
     local upload_file = nil
+    local file = nil
     while true do
         local typ, res, err = form:read()
 
