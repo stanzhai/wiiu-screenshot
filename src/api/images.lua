@@ -23,6 +23,9 @@ function handle_delete()
     local file = args.image
     os.remove('./upload/' .. file)
     os.remove('./thumbnail/' .. file)
+
+    -- delete from qiniu
+    require("utils").delete_file_from_qiniu(file)
     ngx.print("ok")
 end
 

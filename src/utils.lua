@@ -26,4 +26,11 @@ function _M.upload_file_to_qiniu(file)
     os.execute(cmd)
 end
 
+function _M.delete_file_from_qiniu(file)
+    local config = require "config"
+    local cmd = 'qshell account ' .. config.qiniu.ak .. ' ' .. config.qiniu.sk .. ';'
+    cmd = cmd .. 'qshell delete images wiiu/' .. file
+    os.execute(cmd)
+end
+
 return _M
