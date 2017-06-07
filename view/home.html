@@ -88,7 +88,7 @@
                 var group = $('<div class="images"/>');
                 groupData[g].forEach(function (image) {
                     var fileName = image.split('.')[0];
-                    var html = '<a data-fancybox="gallery" data-caption="' + fileName + '" href="/upload/' + image + '"><img src="/thumbnail/' + image + '"></a>';
+                    var html = '<a data-fancybox="gallery" data-caption="' + fileName + '" href="http://images.stanzhai.site/wiiu/' + image + '"><img src="/thumbnail/' + image + '"></a>';
                     group.append(html);
                 });
                 group.appendTo('#container');

@@ -1,4 +1,8 @@
 -- `mv config.lua.template config.lua`
 return {
-    password = "your upload password"
+    password = "your upload password",
+    qiniu = {
+        ak = "Your AccessKey",
+        sk = "Your SecretKey"
+    }
 }

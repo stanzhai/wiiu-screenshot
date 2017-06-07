@@ -85,6 +85,8 @@ local handle_post = function ()
     if upload_file then
         local cmd = 'convert -resize 128x128 "./upload/' .. upload_file .. '" "./thumbnail/' .. upload_file .. '"'
         os.execute(cmd)
+        local upload_file_to_qiniu = require("utils").upload_file_to_qiniu
+        upload_file_to_qiniu(upload_file)
     end
 
     ngx.redirect("/")
