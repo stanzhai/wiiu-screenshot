@@ -21,7 +21,7 @@ local handle_get = function ()
         if session.data.logged then
             res = ngx.location.capture('/wiiu')
         else
-            res = ngx.location.capture('/login')
+            res = ngx.location.capture('/admin')
         end
     else
         res = ngx.location.capture('/home')

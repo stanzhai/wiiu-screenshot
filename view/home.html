@@ -41,6 +41,10 @@
             text-decoration: none;
             outline: 0;
         }
+        span {
+            width: 130px;
+            height: 130px;
+        }
     </style>
 </head>
 <body>
@@ -58,11 +62,14 @@
     <script type="text/javascript">
         var logged = false;
 
-        $.get('/api/images', function (data) {
-            logged = data.logged;
-            var groupData = makeGroup(data);
-            initFancybox(groupData);
-        });
+        function loadImages() {
+            $.get('/api/images', function (data) {
+                logged = data.logged;
+                $('#container').html('');
+                var groupData = makeGroup(data);
+                initFancybox(groupData);
+            });
+        }
 
         function makeGroup(data) {
             var result = {};
@@ -88,13 +95,46 @@
                 var group = $('<div class="images"/>');
                 groupData[g].forEach(function (image) {
                     var fileName = image.split('.')[0];
-                    var html = '<a data-fancybox="gallery" data-caption="' + fileName + '" href="http://images.stanzhai.site/wiiu/' + image + '"><img src="/thumbnail/' + image + '"></a>';
+                    var imgTag = '<img src="/thumbnail/' + image + '" />';
+                    var deleteTag = logged ? '<input class="delete" type="button" value="delete" data="' + image + '"/>' : "";
+                    var html = '<span><a data-fancybox="gallery" data-caption="' + fileName + '" href="http://images.stanzhai.site/wiiu/' + image + '">'
+                                + imgTag + '</a>'
+                                + deleteTag + '</span>';
                     group.append(html);
                 });
                 group.appendTo('#container');
             }
             $("[data-fancybox]").fancybox();
+            bindDeleteEvent();
         }
+
+        function bindDeleteEvent() {
+            if (!logged) {
+                return;
+            }
+            $('.delete').click(function (){
+                var file = $(this).attr('data');
+                if (!confirm("Are you sure you want to delete: " + file)) {
+                    return;
+                }
+                
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/images",
+                    data: {image: file},
+                    success: function (data) {
+                        if (data == 'ok') {
+                            loadImages();
+                        } else {
+                            alter(data);
+                        }
+                    },
+                    dataType: 'text'
+                });
+            });
+        }
+
+        loadImages();
     </script>
 </body>
 </html>
