@@ -9,6 +9,7 @@ A web server based on openresty to save a screenshot of a Nintendo WiiU.
 3. install `luafilesystem` by `luarocks`: `luarocks install luafilesystem`
 4. install `lua-resty-session` by `luarocks`: `luarocks install lua-resty-session`
 5. use `sudo apt-get install imagemagick` to install ImageMagick
+6. install qiniu `qshell` tool from <https://developer.qiniu.com/kodo/tools/1302/qshell>
 
 # Usage
 
