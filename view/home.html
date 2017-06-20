@@ -20,6 +20,22 @@
             background-color: #4ae;
             transition: none;
         }
+        img, #status {
+            -webkit-transition: opacity 0.4s;
+                -moz-transition: opacity 0.4s;
+                -ms-transition: opacity 0.4s;
+                    transition: opacity 0.4s;
+        }
+        #status {
+            opacity: 0;
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background: hsla( 0, 0%, 0%, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 2; /* over other stuff */
+        }
         #footer {
             margin: 10px;
             font-size: 14px;
@@ -51,6 +67,9 @@
     <h1>WiiU Screenshot Server</h1>
     <div id="container">
     </div>
+    <div id="status">
+        <progress max="7" value="0"></progress>
+    </div>
     <div id="footer">
         <div>© 2017 &lt;/&gt; ❤️ <a href="https://github.com/stanzhai" target="_blank">StanZhai</a></div>
         <div><a href="https://github.com/stanzhai/wiiu-screenshot" target="_blank">Fork on GitHub</a></div>
@@ -58,9 +77,21 @@
 
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="/static/jquery.fancybox.min.js"></script>
+    <script src="/static/imagesloaded.pkgd.min.js"></script>
 
     <script type="text/javascript">
         var logged = false;
+        var $container = $('#container');
+        var $status = $('#status');
+        var $progress = $('progress');
+
+        // IE does not support progress
+        var supportsProgress = $progress[0] && $progress[0].toString().indexOf('Unknown') === -1;
+        var loadedImageCount, imageCount;
+
+// -----  ----- //
+
+
 
         function loadImages() {
             $.get('/api/images', function (data) {
@@ -68,6 +99,7 @@
                 $('#container').html('');
                 var groupData = makeGroup(data);
                 initFancybox(groupData);
+
             });
         }
 
@@ -104,8 +136,52 @@
                 });
                 group.appendTo('#container');
             }
+            // use ImagesLoaded
+            $container.imagesLoaded()
+                .progress( onProgress )
+                .always( onAlways );
+            // reset progress counter
+            imageCount = $container.find('img').length;
+            resetProgress();
+            updateProgress( 0 );
+            // init fancybox
             $("[data-fancybox]").fancybox();
             bindDeleteEvent();
+        }
+
+        function resetProgress() {
+            $status.css({ opacity: 1 });
+            loadedImageCount = 0;
+            if ( supportsProgress ) {
+                $progress.attr( 'max', imageCount );
+            }
+        }
+
+        function updateProgress( value ) {
+            if ( supportsProgress ) {
+                $progress.attr( 'value', value );
+            } else {
+                // if you don't support progress elem
+                $status.text( value + ' / ' + imageCount );
+            }
+        }
+
+        // triggered after each item is loaded
+        function onProgress( imgLoad, image ) {
+            // change class if the image is loaded or broken
+            var $item = $( image.img ).parent();
+            $item.removeClass('is-loading');
+            if ( !image.isLoaded ) {
+                $item.addClass('is-broken');
+            }
+            // update progress element
+            loadedImageCount++;
+            updateProgress( loadedImageCount );
+        }
+
+        // hide status when done
+        function onAlways() {
+            $status.css({ opacity: 0 });
         }
 
         function bindDeleteEvent() {
