@@ -89,17 +89,12 @@
         var supportsProgress = $progress[0] && $progress[0].toString().indexOf('Unknown') === -1;
         var loadedImageCount, imageCount;
 
-// -----  ----- //
-
-
-
         function loadImages() {
             $.get('/api/images', function (data) {
                 logged = data.logged;
                 $('#container').html('');
                 var groupData = makeGroup(data);
                 initFancybox(groupData);
-
             });
         }
 
@@ -168,12 +163,6 @@
 
         // triggered after each item is loaded
         function onProgress( imgLoad, image ) {
-            // change class if the image is loaded or broken
-            var $item = $( image.img ).parent();
-            $item.removeClass('is-loading');
-            if ( !image.isLoaded ) {
-                $item.addClass('is-broken');
-            }
             // update progress element
             loadedImageCount++;
             updateProgress( loadedImageCount );
